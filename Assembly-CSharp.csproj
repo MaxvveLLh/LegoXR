@@ -45,13 +45,19 @@
      <Compile Include="Assets\Scripts\ui\TabGroup.cs" />
      <Compile Include="Assets\Scripts\ui\PageNumber.cs" />
      <Compile Include="Assets\Scripts\EnableSelectFlag.cs" />
+     <Compile Include="Assets\Scripts\rotation test\BrickHandler.cs" />
      <Compile Include="Assets\Scripts\RotationTest.cs" />
      <Compile Include="Assets\Scripts\BricksConnect.cs" />
+     <Compile Include="Assets\Scripts\BrickDetach.cs" />
      <Compile Include="Assets\Scripts\WRTC\WRTC.cs" />
+     <Compile Include="Assets\Scripts\rotation test\PreviewTest.cs" />
      <Compile Include="Assets\Scripts\MaleStudCollisionHandler.cs" />
+     <Compile Include="Assets\Scripts\rotation test\FemaleTest.cs" />
      <Compile Include="Assets\Scripts\WRTC\RenderCamera.cs" />
      <Compile Include="Assets\Scripts\ui\TabButton.cs" />
+     <Compile Include="Assets\Scripts\ConnectStructure.cs" />
      <Compile Include="Assets\Scripts\BrickCollisionHandler.cs" />
+     <Compile Include="Assets\Scripts\rotation test\MaleTest.cs" />
      <None Include="Assets\FrontShaders\Front Bump Specular.shader" />
      <None Include="Assets\FrontShaders\Front Diffuse.shader" />
      <None Include="Assets\FrontShaders\Front Bumped.shader" />
@@ -305,7 +311,7 @@
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\PackageCache\com.unity.testtools.codecoverage@1.0.1\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\PackageCache\com.unity.renderstreaming@3.1.0-exp.3\Runtime\Plugins\websocket-sharp.dll</HintPath>
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\PackageCache\com.unity.renderstreaming@3.1.0-exp.4\Runtime\Plugins\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
@@ -697,6 +703,9 @@
     <Reference Include="System.Xml.Serialization">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.8f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Recorder.Editor">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Recorder.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
@@ -715,14 +724,17 @@
     <Reference Include="Unity.InternalAPIEngineBridge.007">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.007.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
-        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
+    <Reference Include="Siccity.GLTFUtility">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Siccity.GLTFUtility.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Searcher.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
@@ -775,20 +787,29 @@
     <Reference Include="Unity.Tutorials.Core">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Tutorials.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderStreaming.Runtime">
-        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.RenderStreaming.Runtime.dll</HintPath>
+    <Reference Include="Unity.Recorder">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Recorder.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderStreaming">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.RenderStreaming.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.InternalAPIEditorBridge.007">
-        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.007.dll</HintPath>
+    <Reference Include="Dracodec">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Dracodec.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Base">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Recorder.Base.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderStreaming.Editor">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.RenderStreaming.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.007">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.007.dll</HintPath>
     </Reference>
     <Reference Include="PPv2URPConverters">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
@@ -840,6 +861,9 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.Core">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Siccity.GLTFUtility.Editor">
+        <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Siccity.GLTFUtility.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
         <HintPath>C:\Users\hudingzhi\Documents\GitHub\Lego-Unity\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>

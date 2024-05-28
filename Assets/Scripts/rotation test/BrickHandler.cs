@@ -76,8 +76,10 @@ public class BrickHandler : MonoBehaviour
 
     public void OnTriggerEnterMaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        MaleList.Add(maleStud);
-        FemaleList.Add(femaleStud);
+        if(IsSelectedFlag){
+            MaleList.Add(maleStud);
+            FemaleList.Add(femaleStud);
+        }
         maleStud.GetComponent<MeshRenderer>().enabled = true;
         
 
@@ -85,7 +87,10 @@ public class BrickHandler : MonoBehaviour
             if(Preview == null)
             {
                 GameObject GrabbedPreview;
-                
+                if(GrabbedPreview = femaleStud.transform.parent.GetComponent<BrickHandler>().Preview){
+                    GrabbedPreview.GetComponent<PreviewTest>().SetToNull();
+                    Destroy(GrabbedPreview);
+                }
                 InitiatePreview(maleStud.transform.parent.gameObject, femaleStud.transform.parent.gameObject, true);
                 GeneratePreview = false;
                 femaleStud.transform.parent.GetComponent<BrickHandler>().GeneratePreview = false;
@@ -95,13 +100,20 @@ public class BrickHandler : MonoBehaviour
     }
     public void OnTriggerExitMaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        MaleList.Remove(maleStud);
-        FemaleList.Remove(femaleStud);
+        if(IsSelectedFlag){
+            MaleList.Remove(maleStud);
+            FemaleList.Remove(femaleStud);
+        }
+        
         maleStud.GetComponent<MeshRenderer>().enabled = false;
     }
 
     public void OnTriggerEnterFemaleStud(GameObject maleStud, GameObject femaleStud)
     {
+        if(IsSelectedFlag){
+            MaleList.Add(maleStud);
+            FemaleList.Add(femaleStud);
+        }
         femaleStud.GetComponent<MeshRenderer>().enabled = true;
        
             /*if(GeneratePreview)
@@ -125,7 +137,10 @@ public class BrickHandler : MonoBehaviour
     }
     public void OnTriggerExitFemaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        
+        if(IsSelectedFlag){
+            MaleList.Remove(maleStud);
+            FemaleList.Remove(femaleStud);
+        }
         femaleStud.GetComponent<MeshRenderer>().enabled = false;
     }
 }

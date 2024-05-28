@@ -16,9 +16,9 @@ public class PreviewScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Male.GetComponent<BrickCollisionHandler>().MaleList.Count == 0)
+        if (Grabbed.GetComponent<BrickCollisionHandler>().MaleList.Count == 0)
         {
-            //if assigned male and female are not colliding: 
+            //if assigned male and female are not colliding, make preview invisible 
             BlueOrNot = false;
             this.GetComponent<MeshRenderer>().enabled = false;
         }else{
@@ -27,22 +27,37 @@ public class PreviewScript : MonoBehaviour
             this.GetComponent<MeshRenderer>().enabled = true;
         }
     }
+
+    /*
+    * Move the Preview to appropriate position 
+    *
+    * - whether grabbed is female or male does matter
+    * - Anchor represents/mimics the ungrabbed brick's stud's transform property
+    * - Anchor is updated in GetPreviewRotation()
+    *
+    * 1. Use Anchor and ungrabbed stud to calculate translate difference between grabbed and ungrabbed bricks
+    * 2. Apply this difference to preview's transform.position
+    */
     public Vector3 GetPreviewPosition()
     {
         Vector3 Difference;
         if(Grabbed == Female){
-            Anchor.transform.localPosition = Male.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.localPosition;
             Difference =  Anchor.transform.position
-             - Male.GetComponent<BrickCollisionHandler>().MaleList[0].transform.position;  
+             - Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.position;  
         }else{
-            Anchor.transform.localPosition = Male.GetComponent<BrickCollisionHandler>().MaleList[0].transform.localPosition;
             Difference = Anchor.transform.position
-             - Male.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.position;
+             - Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.position;
         }
-        Vector3 Position = this.transform.position-Difference;// should use preview's stud difference (after rotation) to calculate diff
+        Vector3 Position = this.transform.position-Difference;
         return Position;
     }
-
+    
+    /*
+    * Return signed angle, which is betwween A and B, along with the axis 
+    *
+    * - the angle's surface is perpendicular to the axis
+    * - axis is usually transform.forward of the traget stud.
+    */
     public static float GetSignedAngle(Quaternion A, Quaternion B, Vector3 axis) 
     {
         float angle = 0f;
@@ -54,39 +69,80 @@ public class PreviewScript : MonoBehaviour
         return Mathf.DeltaAngle(0f, angle);
     }
 
+    /*
+    * Return modified targetRotaion based on angle,
+    *
+    * - Imagine you want to connect a lego brick to another brick, with 90 degrees
+    * - the modification is either 90, -90, 180 or none
+    * - targetRotaion will be used to calculate RotationDifference between studs.
+    */
+    Quaternion TargetRotation(GameObject target, float angle){
+        Quaternion targetRotaion = target.transform.rotation;
+        if(45 < angle && angle < 135){
+            return targetRotaion *= Quaternion.Euler(0, 0, 90);
+        }else if(-45 > angle && angle > -135){
+            return targetRotaion *= Quaternion.Euler(0, 0, -90);
+        }else if((angle < 0 ? -angle : angle) > 135){
+            return targetRotaion *= Quaternion.Euler(0, 0, 180);
+        }
+        return targetRotaion;
+    }
+
+    /*
+    * Rotate the Preview to appropriate angles/rotation  / match UnGrabbed's rotation
+    *
+    * - whether grabbed is female or male does matter
+    *
+    * 1. Get signed angle based on the first studs in the stud list 
+    * 2. Apply modification of turning anles to the ungrabbed (target) stud's rotation
+    * 3. Calculate RotationDifference based on grabbed brick's stud and modified stud's rotaion 
+    * 4. Apply this stud's RotationDifference to preview's transform.rotation
+    */
     public void GetPreviewRotation()
     {
-        //match UnGrabbed's rotation
-        Quaternion Rotation = UnGrabbed.transform.rotation;
-        this.transform.rotation = Rotation;
+        Quaternion RotationDifference;
+        float angle;
+        
+        if (Grabbed == Female){
 
-        float angle = GetSignedAngle(Grabbed.transform.rotation, UnGrabbed.transform.rotation, Vector3.up);
-        if(45 < angle && angle < 135){
-            transform.localRotation = Quaternion.Euler(0, 0, -90);
-        }else if(-45 > angle && angle > -135){
-            transform.localRotation = Quaternion.Euler(0, 0, 90);
-        }else if((angle < 0 ? -angle : angle) > 135){
-            transform.localRotation = Quaternion.Euler(0, 0, 180);
+            angle = GetSignedAngle(Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.rotation, 
+                                   Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.rotation, 
+                                   Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.forward);
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.localPosition;
+            RotationDifference = Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.rotation
+                                * Quaternion.Inverse(TargetRotation(Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0], angle));
+            transform.rotation = Quaternion.Inverse(RotationDifference) * Grabbed.transform.rotation;
+        }else{
+            
+            angle = GetSignedAngle(Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.rotation,  
+                                   Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.rotation, 
+                                   Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.forward);
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.localPosition;
+            RotationDifference = Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.rotation
+                                * Quaternion.Inverse(TargetRotation(Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0], angle));
+            transform.rotation = Quaternion.Inverse(RotationDifference) * Grabbed.transform.rotation;
         }
     }
+    
 
     void TransformPreview()
     {
         //match UnGrabbed's rotation
         GetPreviewRotation();
-        //match correct position
+        //match UnGrabbed's position with connecting studs
         Vector3 Position = GetPreviewPosition(); 
         this.transform.position = Position;
+        
     }
 
 
     public void SwitchLayerToConnectedStuds()
     {
-        foreach (GameObject maleStud in Male.GetComponent<BrickCollisionHandler>().MaleList)
+        foreach (GameObject maleStud in Grabbed.GetComponent<BrickCollisionHandler>().MaleList)
         {
             maleStud.layer = LayerMask.NameToLayer("connected studs");
         }
-        foreach (GameObject femaleStud in Male.GetComponent<BrickCollisionHandler>().FemaleList)
+        foreach (GameObject femaleStud in Grabbed.GetComponent<BrickCollisionHandler>().FemaleList)
         {
             femaleStud.layer = LayerMask.NameToLayer("connected studs");
         }

@@ -8,6 +8,7 @@ public class FemaleStudCollisionHandler : MonoBehaviour
    
     void OnTriggerEnter(Collider collider)
     {
+        //Debug.Log("new stud connecting: " + this.transform.name);
         parent.GetComponent<BrickCollisionHandler>().OnTriggerEnterFemaleStud(collider.gameObject, this.gameObject);
     }
     void OnTriggerExit(Collider collider)
