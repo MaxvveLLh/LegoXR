@@ -16,7 +16,7 @@ public class PreviewScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Male.GetComponent<BrickCollisionHandler>().MaleList.Count == 0)
+        if (Grabbed.GetComponent<BrickCollisionHandler>().MaleList.Count == 0)
         {
             //if assigned male and female are not colliding: 
             BlueOrNot = false;
@@ -31,13 +31,13 @@ public class PreviewScript : MonoBehaviour
     {
         Vector3 Difference;
         if(Grabbed == Female){
-            Anchor.transform.localPosition = Male.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.localPosition;
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.localPosition;
             Difference =  Anchor.transform.position
-             - Male.GetComponent<BrickCollisionHandler>().MaleList[0].transform.position;  
+             - Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.position;  
         }else{
-            Anchor.transform.localPosition = Male.GetComponent<BrickCollisionHandler>().MaleList[0].transform.localPosition;
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickCollisionHandler>().MaleList[0].transform.localPosition;
             Difference = Anchor.transform.position
-             - Male.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.position;
+             - Grabbed.GetComponent<BrickCollisionHandler>().FemaleList[0].transform.position;
         }
         Vector3 Position = this.transform.position-Difference;// should use preview's stud difference (after rotation) to calculate diff
         return Position;
@@ -82,11 +82,11 @@ public class PreviewScript : MonoBehaviour
 
     public void SwitchLayerToConnectedStuds()
     {
-        foreach (GameObject maleStud in Male.GetComponent<BrickCollisionHandler>().MaleList)
+        foreach (GameObject maleStud in Grabbed.GetComponent<BrickCollisionHandler>().MaleList)
         {
             maleStud.layer = LayerMask.NameToLayer("connected studs");
         }
-        foreach (GameObject femaleStud in Male.GetComponent<BrickCollisionHandler>().FemaleList)
+        foreach (GameObject femaleStud in Grabbed.GetComponent<BrickCollisionHandler>().FemaleList)
         {
             femaleStud.layer = LayerMask.NameToLayer("connected studs");
         }

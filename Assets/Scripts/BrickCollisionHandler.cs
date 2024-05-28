@@ -8,10 +8,12 @@ public class BrickCollisionHandler : MonoBehaviour
     public List<GameObject> MaleList = new List<GameObject>();
     public List<GameObject> FemaleList = new List<GameObject>();
     public bool IsSelectedFlag = false; 
+    public bool PreviewLock = false;
     public bool GeneratePreview = true;
     //private Transform Parent; //must destoryed its instance when Select Exited is called from female brick
     public GameObject Preview = null; //must set to null when BricksConnect is invoked by Select Exited.
     private bool MaleOrNot = false;
+    public GameObject ConnectStructure = null;
 
     void InitiatePreview(GameObject male, GameObject female, bool IsMale)
     {
@@ -45,12 +47,14 @@ public class BrickCollisionHandler : MonoBehaviour
 
     public void OnTriggerEnterMaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        MaleList.Add(maleStud);
-        FemaleList.Add(femaleStud);
-        maleStud.GetComponent<MeshRenderer>().enabled = true;
+        if(IsSelectedFlag){
+            MaleList.Add(maleStud);
+            FemaleList.Add(femaleStud);
+        }
+        //maleStud.GetComponent<MeshRenderer>().enabled = true;
         
 
-        if(femaleStud.transform.parent.GetComponent<BrickCollisionHandler>().IsSelectedFlag)
+        if(femaleStud.transform.parent.GetComponent<BrickCollisionHandler>().IsSelectedFlag && !femaleStud.transform.parent.GetComponent<BrickCollisionHandler>().PreviewLock)
         {
             if(GeneratePreview)
             {
@@ -63,6 +67,7 @@ public class BrickCollisionHandler : MonoBehaviour
                 GeneratePreview = false;
                 femaleStud.transform.parent.GetComponent<BrickCollisionHandler>().GeneratePreview = false;
             }
+            
             if(MaleOrNot == false)
             {
                 Preview.GetComponent<PreviewScript>().Male = this.gameObject; 
@@ -73,15 +78,21 @@ public class BrickCollisionHandler : MonoBehaviour
     }
     public void OnTriggerExitMaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        MaleList.Remove(maleStud);
-        FemaleList.Remove(femaleStud);
-        maleStud.GetComponent<MeshRenderer>().enabled = false;
+        if(IsSelectedFlag){
+            MaleList.Remove(maleStud);
+            FemaleList.Remove(femaleStud);
+        }
+        //maleStud.GetComponent<MeshRenderer>().enabled = false; 
     }
 
     public void OnTriggerEnterFemaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        femaleStud.GetComponent<MeshRenderer>().enabled = true;
-        if(maleStud.transform.parent.GetComponent<BrickCollisionHandler>().IsSelectedFlag)
+        if(IsSelectedFlag){
+            MaleList.Add(maleStud);
+            FemaleList.Add(femaleStud);
+        }
+        //femaleStud.GetComponent<MeshRenderer>().enabled = true;
+        if(maleStud.transform.parent.GetComponent<BrickCollisionHandler>().IsSelectedFlag && !maleStud.transform.parent.GetComponent<BrickCollisionHandler>().PreviewLock)
         {
             if(GeneratePreview)
             {
@@ -94,6 +105,7 @@ public class BrickCollisionHandler : MonoBehaviour
                 GeneratePreview = false;
                 maleStud.transform.parent.GetComponent<BrickCollisionHandler>().GeneratePreview = false;
             }
+            
             if(MaleOrNot == true)
             {
                 Preview.GetComponent<PreviewScript>().Male = maleStud.transform.parent.gameObject; 
@@ -104,7 +116,10 @@ public class BrickCollisionHandler : MonoBehaviour
     }
     public void OnTriggerExitFemaleStud(GameObject maleStud, GameObject femaleStud)
     {
-        
-        femaleStud.GetComponent<MeshRenderer>().enabled = false;
+        if(IsSelectedFlag){
+            MaleList.Remove(maleStud);
+            FemaleList.Remove(femaleStud);
+        }
+        //femaleStud.GetComponent<MeshRenderer>().enabled = false;
     }
 }

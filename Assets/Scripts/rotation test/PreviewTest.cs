@@ -16,7 +16,7 @@ public class PreviewTest : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Male.GetComponent<BrickHandler>().MaleList.Count == 0)
+        if (Grabbed.GetComponent<BrickHandler>().MaleList.Count == 0)
         {
             //if assigned male and female are not colliding: 
             BlueOrNot = false;
@@ -45,13 +45,13 @@ public class PreviewTest : MonoBehaviour
         //currently using Grabbed's position to test basic function
         Vector3 Difference;
         if(Grabbed == Female){
-            Anchor.transform.localPosition = Male.GetComponent<BrickHandler>().FemaleList[0].transform.localPosition;
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickHandler>().FemaleList[0].transform.localPosition;
             Difference =  Anchor.transform.position
-             - Male.GetComponent<BrickHandler>().MaleList[0].transform.position; 
+             - Grabbed.GetComponent<BrickHandler>().MaleList[0].transform.position; 
         }else{
-            Anchor.transform.localPosition = Male.GetComponent<BrickHandler>().MaleList[0].transform.localPosition;
+            Anchor.transform.localPosition = Grabbed.GetComponent<BrickHandler>().MaleList[0].transform.localPosition;
             Difference = Anchor.transform.position
-             - Male.GetComponent<BrickHandler>().FemaleList[0].transform.position; 
+             - Grabbed.GetComponent<BrickHandler>().FemaleList[0].transform.position; 
         }
         Vector3 Position = this.transform.position-Difference;// should use preview's stud difference (after rotation) to calculate diff
         return Position;
@@ -69,7 +69,7 @@ public class PreviewTest : MonoBehaviour
         //float angle = Vector3.Angle(Grabbed.transform.rotation.eulerAngles, UnGrabbed.transform.rotation.eulerAngles);
         float angle = GetSignedAngle(Grabbed.transform.rotation, UnGrabbed.transform.rotation, Vector3.up);
         //angle = angle < 0 ? -angle : angle;
-        Debug.Log("Angle: "+angle);
+        //Debug.Log("Angle: "+angle);
         //Debug.Log(Grabbed.transform.rotation.eulerAngles);
         //Debug.Log(UnGrabbed.transform.rotation.eulerAngles);
         if(45 < angle && angle < 135){
@@ -102,11 +102,11 @@ public class PreviewTest : MonoBehaviour
 
     public void SwitchLayerToConnectedStuds()
     {
-        foreach (GameObject maleStud in Male.GetComponent<BrickHandler>().MaleList)
+        foreach (GameObject maleStud in Grabbed.GetComponent<BrickHandler>().MaleList)
         {
             maleStud.layer = LayerMask.NameToLayer("connected studs");
         }
-        foreach (GameObject femaleStud in Male.GetComponent<BrickHandler>().FemaleList)
+        foreach (GameObject femaleStud in Grabbed.GetComponent<BrickHandler>().FemaleList)
         {
             femaleStud.layer = LayerMask.NameToLayer("connected studs");
         }
